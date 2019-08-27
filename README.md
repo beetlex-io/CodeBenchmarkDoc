@@ -2,7 +2,7 @@
 Unit code performance benchmark test component for netstandard 2.0
 ## using 
 ```
-Install-Package CodeBenchmark -Version 0.5.0
+Install-Package BeetleX.CodeBenchmark -Version 0.6.2
 ```
 ## Tcp text example
 ``` csharp
