@@ -74,4 +74,6 @@ Install-Package CodeBenchmark -Version 0.5.0
         }
     }
 ```
+## Open
+default url 'http://localhost:9090/'
 ![](https://raw.githubusercontent.com/IKende/CodeBenchmarkDoc/master/images/ui.png)
