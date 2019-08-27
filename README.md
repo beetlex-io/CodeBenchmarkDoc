@@ -4,60 +4,92 @@ Unit code performance benchmark test component for netstandard 2.0
 ```
 Install-Package CodeBenchmark -Version 0.5.0
 ```
-## New example
+## Tcp text example
 ``` csharp
-    [System.ComponentModel.Category("ADO.NET")]
-    public class PgSelectList : IExample
+[System.ComponentModel.Category("TCP")]
+public class TcpTextLine : IExample
+{
+    public async Task Execute()
+    {
+        var data = $"henryfan@{DateTime.Now}";
+        var stream = await mClient.ReceiveFrom(s => s.WriteLine(data));
+        stream.ReadLine();
+
+    }
+
+    private BeetleX.Clients.AsyncTcpClient mClient;
+
+    public void Initialize(Benchmark benchmark)
+    {
+        mClient = BeetleX.SocketFactory.CreateClient<BeetleX.Clients.AsyncTcpClient>("192.168.2.19", 9012);
+    }
+
+    public void Dispose()
+    {
+       
+    }
+}
+```
+## Websocket json example
+``` csharp
+[System.ComponentModel.Category("TCP")]
+public class WebsocketJson : IExample
+{
+    public async Task Execute()
+    {
+        var request = new { url = "/json" };
+        var result = await jsonClient.ReceiveFrom(request);
+    }
+
+    private BeetleX.Http.WebSockets.JsonClient jsonClient;
+
+    public void Initialize(Benchmark benchmark)
+    {
+        jsonClient = new BeetleX.Http.WebSockets.JsonClient("ws://192.168.2.19:8080");
+    }
+
+    public void Dispose()
+    {
+        jsonClient.Dispose();
+    }
+}
+```
+## Http get example
+``` csharp
+  [System.ComponentModel.Category("TCP")]
+class HttpGet : IExample
+{
+    public void Dispose()
     {
 
-        private string mConnectionString = "Server=192.168.2.19;Database=hello_world;User Id=benchmarkdbuser;Password=benchmarkdbpass;Maximum Pool Size=256;NoResetOnClose=true;Enlist=false;Max Auto Prepare=3";
+    }
 
-        public void Initialize(Benchmark benchmark)
+    public async Task Execute()
+    {
+        var result = await _httpHandler.json();
+    }
+
+    public void Initialize(Benchmark benchmark)
+    {
+        if (_httpApi == null)
         {
-        }
-
-        public async Task Execute()
-        {
-            var result = new List<FortuneDTO>();
-
-            using (var db = Npgsql.NpgsqlFactory.Instance.CreateConnection())
-            using (var cmd = db.CreateCommand())
-            {
-                cmd.CommandText = "SELECT id, message FROM fortune";
-
-                db.ConnectionString = mConnectionString;
-                await db.OpenAsync();
-                using (var rdr = await cmd.ExecuteReaderAsync(CommandBehavior.CloseConnection))
-                {
-                    while (await rdr.ReadAsync())
-                    {
-                        result.Add(new FortuneDTO
-                        {
-                            Id = rdr.GetInt32(0),
-                            Message = rdr.GetString(1)
-                        });
-                    }
-                }
-            }
-        }
-
-        public class FortuneDTO : IComparable<FortuneDTO>, IComparable
-        {
-            public int Id { get; set; }
-
-            public string Message { get; set; }
-
-            public int CompareTo(object obj)
-            {
-                return CompareTo((FortuneDTO)obj);
-            }
-
-            public int CompareTo(FortuneDTO other)
-            {
-                return String.CompareOrdinal(Message, other.Message);
-            }
+            _httpApi = new BeetleX.Http.Clients.HttpClusterApi();
+            _httpApi.DefaultNode.Add("http://192.168.2.19:8080");
+            _httpHandler = _httpApi.Create<IHttpHandler>();
         }
     }
+
+    static BeetleX.Http.Clients.HttpClusterApi _httpApi;
+
+    static IHttpHandler _httpHandler;
+
+    [BeetleX.Http.Clients.FormUrlFormater]
+    public interface IHttpHandler
+    {
+        // http://host/json
+        Task<string> json();
+    }
+}
 ```
 ## Runing
 ``` csharp
