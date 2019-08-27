@@ -22,5 +22,10 @@ public class TcpTextLine : IExample
     {
         mClient = BeetleX.SocketFactory.CreateClient<BeetleX.Clients.AsyncTcpClient>("192.168.2.19", 9012);
     }
+
+    public void Dispose()
+    {
+       
+    }
 }
 
