@@ -91,6 +91,29 @@ class HttpGet : IExample
     }
 }
 ```
+## XRPC sample
+``` csharp
+[System.ComponentModel.Category("XRPC")]
+public class XRPC_Add : IExample
+{
+    public void Dispose()
+    {
+
+    }
+
+    public async Task Execute()
+    {
+        var result = await userService.Add("henry", "henryfan@msn.com", "guangzhou", "http://github.com");
+    }
+
+    private IUserService userService;
+
+    public void Initialize(Benchmark benchmark)
+    {
+        userService = XRPCHandler.Single.UserService;
+    }
+}
+```
 ## Runing
 ``` csharp
     class Program
