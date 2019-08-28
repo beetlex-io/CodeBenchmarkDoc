@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-
+//Install-Package BeetleX -Version 1.3.7.2
 [System.ComponentModel.Category("TCP")]
 public class TcpTextLine : IExample
 {
@@ -25,7 +25,7 @@ public class TcpTextLine : IExample
 
     public void Dispose()
     {
-       
+        mClient.Dispose();
     }
 }
 

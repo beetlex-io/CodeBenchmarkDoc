@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
+//Install-Package BeetleX.Http.Clients -Version 0.8.8
 [System.ComponentModel.Category("TCP")]
 class HttpGet : IExample
 {
@@ -26,7 +27,6 @@ class HttpGet : IExample
             _httpHandler = _httpApi.Create<IHttpHandler>();
         }
     }
-
 
     static BeetleX.Http.Clients.HttpClusterApi _httpApi;
 
