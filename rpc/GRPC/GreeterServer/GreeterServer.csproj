@@ -9,4 +9,10 @@
     <ProjectReference Include="..\Greeter\Greeter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="run.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

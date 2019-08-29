@@ -1,1 +1,1 @@
-﻿dotnet RPCBenchmark.dll
+dotnet RPCBenchmark.dll

@@ -37,7 +37,7 @@ namespace GreeterServer
             Server server = new Server
             {
                 Services = { Greeter.BindService(new GreeterImpl()) },
-                Ports = { new ServerPort("192.168.2.19", Port, ServerCredentials.Insecure) }
+                Ports = { new ServerPort("", Port, ServerCredentials.Insecure) }
             };
             server.Start();
 
