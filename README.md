@@ -2,7 +2,7 @@
 Unit code performance benchmark test component for netstandard 2.0
 ## using 
 ```
-Install-Package BeetleX.CodeBenchmark -Version 0.6.2
+Install-Package BeetleX.CodeBenchmark -Version 0.7.2
 ```
 ## Tcp text example
 ``` csharp
@@ -88,6 +88,29 @@ class HttpGet : IExample
     {
         // http://host/json
         Task<string> json();
+    }
+}
+```
+## XRPC sample
+``` csharp
+[System.ComponentModel.Category("XRPC")]
+public class XRPC_Add : IExample
+{
+    public void Dispose()
+    {
+
+    }
+
+    public async Task Execute()
+    {
+        var result = await userService.Add("henry", "henryfan@msn.com", "guangzhou", "http://github.com");
+    }
+
+    private IUserService userService;
+
+    public void Initialize(Benchmark benchmark)
+    {
+        userService = XRPCHandler.Single.UserService;
     }
 }
 ```
